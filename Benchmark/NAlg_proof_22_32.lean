@@ -1,4 +1,4 @@
-﻿import Mathlib
+import Mathlib
 
 set_option linter.style.longLine false
 
@@ -27,8 +27,6 @@ noncomputable def minimum_singular_value {m n : ℕ} [NeZero m] [NeZero n]
 -/
 noncomputable def pseudospectrum {n : ℕ} [NeZero n] (A : Matrix (Fin n) (Fin n) ℂ) (ε : ℝ) :
     Set ℂ := { z : ℂ | minimum_singular_value (A - z • (1 : Matrix (Fin n) (Fin n) ℂ)) ≤ ε }
-
-
 
 section NAlg22
 
@@ -182,7 +180,7 @@ open Pointwise
 Theorem 7.9.4. If $D=\operatorname{diag}\left(\lambda_1, \ldots, \lambda_n\right)$, then $\Lambda_\epsilon(D)=\left\{\lambda_1, \ldots, \lambda_n\right\}+\Delta_\epsilon$.
 -/
 theorem theorem_7_9_4 {n : ℕ} [NeZero n] (v : Fin n → ℂ) (ε : ℝ) (hε : ε > 0) :
-    (diagonal v).pseudospectrum ε = (Set.range fun i ↦ v i) + Metric.closedBall (0 : ℂ) ε := by
+    pseudospectrum (diagonal v) ε = (Set.range fun i ↦ v i) + Metric.closedBall (0 : ℂ) ε := by
   sorry
 
 end NAlg28
