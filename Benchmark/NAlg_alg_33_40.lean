@@ -23,7 +23,7 @@ end MAT_1
 namespace NAlg_A1
 
 /-
-P3.1.7 Suppose $L, K \in \mathbb{R}^{n \times n}$ are lower triangular and $B \in \mathbb{R}^{n \times n}$.
+P3.1.7 Suppose $L, K \in \mathbb{R}^{n \times n}$ are lower triangular and $B \in \mathbb{R}^{n \times n}$. Give an algorithm for computing $X \in \mathbb{R}^{n \times n}$ so that $L X K=B$.
 -/
 
 variable {n : ℕ} {L K : Matrix (Fin n) (Fin n) ℝ} (B : Matrix (Fin n) (Fin n) ℝ)
