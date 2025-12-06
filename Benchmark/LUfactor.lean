@@ -77,12 +77,10 @@ lemma gaussElimInv_lower (U : Matrix (Fin n) (Fin n) ℝ) (k : Fin n) :
 
 lemma lower_mul {A B : Matrix (Fin n) (Fin n) ℝ} (hA : LowerTriangular A) (hB : LowerTriangular B) :
     LowerTriangular (A * B) := by
-  simpa [LowerTriangular] using
-    (BlockTriangular.mul (b := OrderDual.toDual) (M := A) (N := B) hA hB)
+  simpa [LowerTriangular] using BlockTriangular.mul hA hB
 
 lemma lufactor_lower_triangular (A : Matrix (Fin n) (Fin n) ℝ) :
-    ∀ k, LowerTriangular (lufactor A k).1 := by
-  intro k
+    ∀ k, LowerTriangular (lufactor A k).1 := fun k ↦ by
   induction k with
   | zero =>
       intro i j hij
