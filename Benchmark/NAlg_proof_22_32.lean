@@ -28,7 +28,10 @@ noncomputable def minimum_singular_value {m n : ℕ} [NeZero m] [NeZero n]
 noncomputable def pseudospectrum {n : ℕ} [NeZero n] (A : Matrix (Fin n) (Fin n) ℂ) (ε : ℝ) :
     Set ℂ := { z : ℂ | minimum_singular_value (A - z • (1 : Matrix (Fin n) (Fin n) ℂ)) ≤ ε }
 
-section NAlg22
+
+
+
+namespace NAlg22
 
 /--
 The minimum singular value of a complex matrix $A$ is the infimum of $\|A v\|_2$ over all unit
@@ -44,7 +47,7 @@ end NAlg22
 
 
 
-section NAlg23
+namespace NAlg23
 
 attribute [instance] instL2OpNormedAddCommGroup
 
@@ -64,7 +67,7 @@ end NAlg23
 
 
 
-section NAlg24
+namespace NAlg24
 
 /--
 Corollary 7.9.3. If $X \in \mathbb{C}^{n \times n}$ is unitary and $A \in \mathbb{C}^{n \times n}$,
@@ -81,7 +84,7 @@ end NAlg24
 
 
 
-section NAlg25
+namespace NAlg25
 
 attribute [instance] instL2OpNormedAddCommGroup
 
@@ -111,7 +114,7 @@ end NAlg25
 
 
 
-section NAlg26
+namespace NAlg26
 
 /--
 Theorem 7.9.6. If
@@ -139,7 +142,7 @@ end NAlg26
 
 
 
-section NAlg27
+namespace NAlg27
 
 /--
 P4.2.12 Show that if
@@ -172,7 +175,7 @@ end NAlg27
 
 
 
-section NAlg28
+namespace NAlg28
 
 open Pointwise
 
@@ -187,7 +190,7 @@ end NAlg28
 
 
 
-section NAlg29
+namespace NAlg29
 
 open Pointwise
 
@@ -202,7 +205,7 @@ end NAlg29
 
 
 
-section NAlg30
+namespace NAlg30
 
 attribute [instance] instL2OpNormedAddCommGroup
 
@@ -221,7 +224,7 @@ end NAlg30
 
 
 
-section NAlg31
+namespace NAlg31
 
 attribute [instance] instL2OpNormedAddCommGroup
 
@@ -274,7 +277,7 @@ end NAlg31
 
 
 
-section NAlg32
+namespace NAlg32
 
 /--
 P8.4.8 Suppose that

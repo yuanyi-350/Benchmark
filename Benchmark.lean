@@ -1,4 +1,5 @@
 import Benchmark.Basic
+import Benchmark.EasyProblems
 import Benchmark.LUfactor
 import Benchmark.NAlg_alg_33_40
 import Benchmark.NAlg_alg_41_49

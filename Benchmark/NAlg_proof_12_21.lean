@@ -150,7 +150,7 @@ $$ -/
 theorem theorem_4_2_6 {n : ℕ} [NeZero n] (A L U T S : Matrix (Fin n) (Fin n) ℝ)
     (hA : Matrix.PosDef A) (HL1 : ∀ i, L.diag i = 1) (hL : L.BlockTriangular OrderDual.toDual)
     (hU : U.BlockTriangular id) (hLU : A = L * U) (hT : T = (A + Aᵀ) / 2) (hS : S = (A - Aᵀ) / 2) :
-    frobeniusSeminormedAddCommGroup.norm (abs.comp L * abs.comp U) =
+    frobeniusSeminormedAddCommGroup.norm (abs.comp L * abs.comp U) ≤
     n * (instL2OpNormedAddCommGroup.norm T + instL2OpNormedAddCommGroup.norm (S * T⁻¹ * S)) := by
   sorry
 
@@ -251,6 +251,8 @@ section NAlg21
 
 open scoped Matrix.Norms.Operator
 
+variable {n : ℕ} [NeZero n] {A L U : Matrix (Fin n) (Fin n) ℝ}
+
 /--
 P3.4.1 Let $A=L U$ be the LU factorization of $n$-by-$n A$ with $\left|\ell_{i j}\right| \leq 1$.
 
@@ -263,15 +265,14 @@ $$
 and use it to show that $\|U\|_{\infty} \leq 2^{n-1}\|A\|_{\infty}$. (Hint: Take norms and use induction.) All the matrix are real matrix
 -/
 
-theorem LU_factorization_prop {n : ℕ} [NeZero n] (A L U : Matrix (Fin n) (Fin n) ℝ)
-    (hL1 : ∀ i, A.diag i = 1) (hL : L.BlockTriangular OrderDual.toDual) (hU : U.BlockTriangular id)
-    (hLU : A = L * U) (i : Fin n) :
+theorem LU_factorization_prop (hL1 : ∀ i, L.diag i = 1) (hL : L.BlockTriangular OrderDual.toDual)
+    (hU : U.BlockTriangular id) (hLU : A = L * U) (i : Fin n) :
     U i = A i - ∑ j ∈ Finset.filter (fun j => j < i) Finset.univ, L i j • U j := by
   sorry
 
-theorem LU_factorization_norm_bound {n : ℕ} [NeZero n] (A L U : Matrix (Fin n) (Fin n) ℝ)
-    (hL1 : ∀ i, A.diag i = 1) (hL : L.BlockTriangular OrderDual.toDual) (hU : U.BlockTriangular id)
-    (hLU : A = L * U) (i : Fin n) : ‖U‖ ≤ (2 : ℝ) ^ (n - 1) * ‖A‖ := by
+theorem LU_factorization_norm_bound (hL1 : ∀ i, L.diag i = 1)
+    (hL : L.BlockTriangular OrderDual.toDual) (hU : U.BlockTriangular id) (hLU : A = L * U)
+    (i : Fin n) : ‖U‖ ≤ (2 : ℝ) ^ (n - 1) * ‖A‖ := by
   sorry
 
 end NAlg21

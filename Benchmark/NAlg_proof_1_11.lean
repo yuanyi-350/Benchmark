@@ -2,13 +2,11 @@ import Mathlib
 
 set_option linter.style.longLine false
 
-namespace P1
-
 open Matrix WithLp
 
 
 
-section NAlg1
+namespace NAlg1
 
 /--
 P2.1.1 Show that if $A \in \mathbb{R}^{m \times n}$ has rank $p$, then there exists an $X \in \mathbb{R}^{m \times p}$ and a $Y \in \mathbb{R}^{n \times p}$ such that $A=X Y^T$, where $\operatorname{rank}(X)=\operatorname{rank}(Y)=p$.
@@ -23,7 +21,7 @@ end NAlg1
 
 
 
-section NAlg2
+namespace NAlg2
 
 /--
 P2.1.9 Show that if $S$ is real and $S^T=-S$, then $I-S$ is nonsingular and the matrix $(I-S)^{-1}(I+S)$ is orthogonal.
@@ -40,7 +38,7 @@ end NAlg2
 
 
 
-section NAlg3
+namespace NAlg3
 
 /--
 P5.1.2 Show that $\operatorname{det}\left(I+x y^T\right)=1+x^T y$ where $x$ and $y$ are given $m$-vectors.
@@ -53,7 +51,7 @@ end NAlg3
 
 
 
-section NAlg4
+namespace NAlg4
 
 /--
 P5.5.8 Suppose $A \in \mathbb{R}^{m \times n}$ and that $\left\|u^T A\right\|_2 = \sigma$ with $u^T u=1$.
@@ -70,7 +68,7 @@ end NAlg4
 
 
 
-section NAlg5
+namespace NAlg5
 
 /--
 P5.2.12 Show that if $A \in \mathbb{R}^{n \times n}$ and $a_i=A(:, i)$, then
@@ -87,7 +85,7 @@ end NAlg5
 
 
 
-section NAlg6
+namespace NAlg6
 
 /--
 Lemma 5.1.1. Suppose $Q=I_m-W Y^T$ is an $m$-by-$m$ orthogonal matrix with $W, Y \in \mathbb{R}^{m \times j}$.
@@ -111,7 +109,7 @@ end NAlg6
 
 
 
-section NAlg7
+namespace NAlg7
 
 /--
 P7.5.1 Show that if $\bar{H}=Q^T H Q$ is obtained by performing a single-shift QR step with
@@ -136,7 +134,7 @@ end NAlg7
 
 
 
-section NAlg8
+namespace NAlg8
 
 /--
 Theorem 4.2.3. The matrix $A \in \mathbb{R}^{n \times n}$ is positive definite if and only if the symmetric matrix
@@ -155,7 +153,7 @@ end NAlg8
 
 
 
-section NAlg9
+namespace NAlg9
 
 /--
 Section 4.4.5. A very important class of symmetric indefinite matrices have the form
@@ -178,7 +176,7 @@ end NAlg9
 
 
 
-section NAlg10
+namespace NAlg10
 
 /--
 P6.2.4 (b) Show that if $\left(A A^T+\lambda I\right) z=-b$, $\left\|A^T z\right\|_2=\alpha$,
@@ -195,7 +193,7 @@ end NAlg10
 
 
 
-section NAlg11
+namespace NAlg11
 
 attribute [local instance] frobeniusSeminormedAddCommGroup
 
