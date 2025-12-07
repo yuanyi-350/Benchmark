@@ -227,5 +227,3 @@ theorem exercise_p6_4_1 {m p : ℕ} [NeZero m] [NeZero p] (A B : Matrix (Fin m) 
   sorry
 
 end NAlg11
-
-end P1
