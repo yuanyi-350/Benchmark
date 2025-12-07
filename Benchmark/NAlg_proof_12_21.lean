@@ -2,9 +2,29 @@ import Mathlib
 
 set_option linter.style.longLine false
 
-namespace P2
-
 open Matrix WithLp
+
+
+
+namespace NAlg12
+
+def diagonalizable {n : Type u} [Fintype n] [DecidableEq n] {R : Type v} [CommRing R]
+    (A : Matrix n n R) : Prop :=
+  ∃ (P : Matrix n n R) (D : Matrix n n R), IsUnit P ∧ IsDiag D ∧ A = P⁻¹ * D * P
+
+/--
+P8.7.4 Show that if $C$ is real and diagonalizable, then there exist symmetric matrices $A$ and $B, B$ nonsingular, such that $C=A B^{-1}$. This shows that symmetric pencils $A-\lambda B$ are essentially general.
+-/
+theorem exists_symmetric_factorization_of_diagonalizable_real_matrix {n : ℕ} [NeZero n] :
+    ∀ (C : Matrix (Fin n) (Fin n) ℝ), diagonalizable C →
+    ∃ (A B : Matrix (Fin n) (Fin n) ℝ), Aᵀ = A ∧ Bᵀ = B ∧ IsUnit B ∧ C = A * B⁻¹ := by
+  sorry
+
+end NAlg12
+
+
+
+namespace NAlg13
 
 /-- `singularValues A i` is the `i`-th singular value (0-based) of a real matrix `A`.
 It is defined as the square root of the `i`-th (decreasingly ordered) eigenvalue of
@@ -21,32 +41,6 @@ noncomputable def singularValues {m p : ℕ} [NeZero m] [NeZero p] (A : Matrix (
 noncomputable def maximum_singular_value {m n : ℕ} [NeZero m] [NeZero n]
     (A : Matrix (Fin m) (Fin n) ℝ) : ℝ :=
   singularValues A ⟨0, n.pos_of_neZero⟩
-
-noncomputable def minimum_singular_value {m n : ℕ} [NeZero m] [NeZero n]
-    (A : Matrix (Fin m) (Fin n) ℝ) : ℝ :=
-  singularValues A ⟨n - 1, Nat.sub_one_lt (NeZero.ne' n).symm⟩
-
-def diagonalizable {n : Type u} [Fintype n] [DecidableEq n] {R : Type v} [CommRing R]
-    (A : Matrix n n R) : Prop :=
-  ∃ (P : Matrix n n R) (D : Matrix n n R), IsUnit P ∧ IsDiag D ∧ A = P⁻¹ * D * P
-
-
-
-section NAlg12
-
-/--
-P8.7.4 Show that if $C$ is real and diagonalizable, then there exist symmetric matrices $A$ and $B, B$ nonsingular, such that $C=A B^{-1}$. This shows that symmetric pencils $A-\lambda B$ are essentially general.
--/
-theorem exists_symmetric_factorization_of_diagonalizable_real_matrix {n : ℕ} [NeZero n] :
-    ∀ (C : Matrix (Fin n) (Fin n) ℝ), diagonalizable C →
-    ∃ (A B : Matrix (Fin n) (Fin n) ℝ), Aᵀ = A ∧ Bᵀ = B ∧ IsUnit B ∧ C = A * B⁻¹ := by
-  sorry
-
-end NAlg12
-
-
-
-noncomputable section NAlg13
 
 /--
 P2.4.2 Prove that if $A \in \mathbb{R}^{m \times n}$, then
@@ -65,7 +59,23 @@ end NAlg13
 
 
 
-section NAlg14
+namespace NAlg14
+
+/-- `singularValues A i` is the `i`-th singular value (0-based) of a real matrix `A`.
+It is defined as the square root of the `i`-th (decreasingly ordered) eigenvalue of
+the symmetric Gram matrix `Aᵀ * A`. -/
+noncomputable def singularValues {m p : ℕ} [NeZero m] [NeZero p] (A : Matrix (Fin m) (Fin p) ℝ) :
+    Fin p → ℝ := by
+  set M : Matrix (Fin p) (Fin p) ℝ := Aᵀ * A
+  have hSymm : IsSymm M := by
+    rw [Matrix.IsSymm, transpose_mul, transpose_transpose]
+  have hT : (toEuclideanLin M).IsSymmetric :=
+    isHermitian_iff_isSymmetric.mp hSymm
+  exact fun i ↦ Real.sqrt (LinearMap.IsSymmetric.eigenvalues hT (by simp) i)
+
+noncomputable def minimum_singular_value {m n : ℕ} [NeZero m] [NeZero n]
+    (A : Matrix (Fin m) (Fin n) ℝ) : ℝ :=
+  singularValues A ⟨n - 1, Nat.sub_one_lt (NeZero.ne' n).symm⟩
 
 /--
 P6.2.7 Suppose
@@ -97,7 +107,7 @@ end NAlg14
 
 
 
-section NAlg15
+namespace NAlg15
 
 /--
 P9.4.8 Show that the polar decomposition of a nonsingular matrix is unique. Hint: If $A=U_1 P_1$ and $A=U_2 P_2$ are two polar decompositions, then $U_2^T U_1=P_2 P_1^{-1}$ and $U_1^T U_2=P_1 P_2^{-1}$ have the same eigenvalues. All the matrix are real matrix
@@ -113,7 +123,7 @@ end NAlg15
 
 
 
-section NAlg16
+namespace NAlg16
 
 variable {n : Type*} [Fintype n] [DecidableEq n] (A : Matrix n n ℝ) (hA : IsSymm A)
 
@@ -137,7 +147,7 @@ end NAlg16
 
 
 
-section NAlg17
+namespace NAlg17
 
 -- Note : #check Matrix.det_of_upperTriangular
 -- #check Matrix.det_of_lowerTriangular gives some examples of how to describe L and U in mathlib
@@ -158,7 +168,7 @@ end NAlg17
 
 
 
-section NAlg18
+namespace NAlg18
 
 /--
 P6.2.4 (a) Show that if $\left(A^T A+\lambda I\right) x=A^T b, \lambda>0$,
@@ -187,7 +197,7 @@ end NAlg18
 
 
 
-section NAlg19
+namespace NAlg19
 
 /--
 P6.2.3 Suppose $Y=\left[y_1|\cdots| y_k\right] \in \mathbb{R}^{m \times k}$ has the property that
@@ -213,7 +223,23 @@ end NAlg19
 
 
 
-section NAlg20
+namespace NAlg20
+
+/-- `singularValues A i` is the `i`-th singular value (0-based) of a real matrix `A`.
+It is defined as the square root of the `i`-th (decreasingly ordered) eigenvalue of
+the symmetric Gram matrix `Aᵀ * A`. -/
+noncomputable def singularValues {m p : ℕ} [NeZero m] [NeZero p] (A : Matrix (Fin m) (Fin p) ℝ) :
+    Fin p → ℝ := by
+  set M : Matrix (Fin p) (Fin p) ℝ := Aᵀ * A
+  have hSymm : IsSymm M := by
+    rw [Matrix.IsSymm, transpose_mul, transpose_transpose]
+  have hT : (toEuclideanLin M).IsSymmetric :=
+    isHermitian_iff_isSymmetric.mp hSymm
+  exact fun i ↦ Real.sqrt (LinearMap.IsSymmetric.eigenvalues hT (by simp) i)
+
+noncomputable def minimum_singular_value {m n : ℕ} [NeZero m] [NeZero n]
+    (A : Matrix (Fin m) (Fin n) ℝ) : ℝ :=
+  singularValues A ⟨n - 1, Nat.sub_one_lt (NeZero.ne' n).symm⟩
 
 /--
 P6.5.2 Suppose
@@ -247,7 +273,7 @@ end NAlg20
 
 
 
-section NAlg21
+namespace NAlg21
 
 open scoped Matrix.Norms.Operator
 
@@ -276,5 +302,3 @@ theorem LU_factorization_norm_bound (hL1 : ∀ i, L.diag i = 1)
   sorry
 
 end NAlg21
-
-end P2
