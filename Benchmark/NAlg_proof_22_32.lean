@@ -2,9 +2,43 @@ import Mathlib
 
 set_option linter.style.longLine false
 
-namespace P3
+open Matrix WithLp Pointwise
 
-open Matrix WithLp
+
+
+namespace NAlg22
+
+/-- `singularValues A i` is the `i`-th singular value (0-based) of a real matrix `A`.
+It is defined as the square root of the `i`-th (decreasingly ordered) eigenvalue of
+the symmetric Gram matrix `Aᴴ * A`. -/
+noncomputable def singularValues {m p : ℕ} [NeZero m] [NeZero p] (A : Matrix (Fin m) (Fin p) ℂ) :
+    Fin p → ℝ := by
+  set M : Matrix (Fin p) (Fin p) ℂ := Aᴴ * A
+  have hM : M.IsHermitian := by
+    rw [IsHermitian, conjTranspose_mul, conjTranspose_conjTranspose]
+  have hT : (toEuclideanLin M).IsSymmetric :=
+    isHermitian_iff_isSymmetric.mp hM
+  exact fun i ↦ Real.sqrt (LinearMap.IsSymmetric.eigenvalues hT (by simp) i)
+
+noncomputable def minimum_singular_value {m n : ℕ} [NeZero m] [NeZero n]
+    (A : Matrix (Fin m) (Fin n) ℂ) : ℝ :=
+  singularValues A ⟨n - 1, Nat.sub_one_lt (NeZero.ne' n).symm⟩
+
+/--
+The minimum singular value of a complex matrix $A$ is the infimum of $\|A v\|_2$ over all unit
+vectors $v$ (for the $L^2$-norm)
+-/
+
+lemma minimum_singular_value_prop  {m n : ℕ} [NeZero m] [NeZero n] (A : Matrix (Fin m) (Fin n) ℂ) :
+    minimum_singular_value A =
+    sInf { y | ∃ v : Fin n → ℂ , ‖toLp 2 v‖ = 1 ∧ y = ‖toLp 2 (A *ᵥ v)‖} := by
+  sorry
+
+end NAlg22
+
+
+
+namespace NAlg23
 
 /-- `singularValues A i` is the `i`-th singular value (0-based) of a real matrix `A`.
 It is defined as the square root of the `i`-th (decreasingly ordered) eigenvalue of
@@ -28,27 +62,6 @@ noncomputable def minimum_singular_value {m n : ℕ} [NeZero m] [NeZero n]
 noncomputable def pseudospectrum {n : ℕ} [NeZero n] (A : Matrix (Fin n) (Fin n) ℂ) (ε : ℝ) :
     Set ℂ := { z : ℂ | minimum_singular_value (A - z • (1 : Matrix (Fin n) (Fin n) ℂ)) ≤ ε }
 
-
-
-
-namespace NAlg22
-
-/--
-The minimum singular value of a complex matrix $A$ is the infimum of $\|A v\|_2$ over all unit
-vectors $v$ (for the $L^2$-norm)
--/
-
-lemma minimum_singular_value_prop  {m n : ℕ} [NeZero m] [NeZero n] (A : Matrix (Fin m) (Fin n) ℂ) :
-    minimum_singular_value A =
-    sInf { y | ∃ v : Fin n → ℂ , ‖toLp 2 v‖ = 1 ∧ y = ‖toLp 2 (A *ᵥ v)‖} := by
-  sorry
-
-end NAlg22
-
-
-
-namespace NAlg23
-
 attribute [instance] instL2OpNormedAddCommGroup
 
 /-- Condition number with respect to the operator 2-norm. -/
@@ -68,6 +81,28 @@ end NAlg23
 
 
 namespace NAlg24
+
+/-- `singularValues A i` is the `i`-th singular value (0-based) of a real matrix `A`.
+It is defined as the square root of the `i`-th (decreasingly ordered) eigenvalue of
+the symmetric Gram matrix `Aᴴ * A`. -/
+noncomputable def singularValues {m p : ℕ} [NeZero m] [NeZero p] (A : Matrix (Fin m) (Fin p) ℂ) :
+    Fin p → ℝ := by
+  set M : Matrix (Fin p) (Fin p) ℂ := Aᴴ * A
+  have hM : M.IsHermitian := by
+    rw [IsHermitian, conjTranspose_mul, conjTranspose_conjTranspose]
+  have hT : (toEuclideanLin M).IsSymmetric :=
+    isHermitian_iff_isSymmetric.mp hM
+  exact fun i ↦ Real.sqrt (LinearMap.IsSymmetric.eigenvalues hT (by simp) i)
+
+noncomputable def minimum_singular_value {m n : ℕ} [NeZero m] [NeZero n]
+    (A : Matrix (Fin m) (Fin n) ℂ) : ℝ :=
+  singularValues A ⟨n - 1, Nat.sub_one_lt (NeZero.ne' n).symm⟩
+
+/--
+ε–pseudospectrum of a complex matrix A : Λ_ε(A) = { z ∈ ℂ | σ_min(A - zI) ≤ ε }
+-/
+noncomputable def pseudospectrum {n : ℕ} [NeZero n] (A : Matrix (Fin n) (Fin n) ℂ) (ε : ℝ) :
+    Set ℂ := { z : ℂ | minimum_singular_value (A - z • (1 : Matrix (Fin n) (Fin n) ℂ)) ≤ ε }
 
 /--
 Corollary 7.9.3. If $X \in \mathbb{C}^{n \times n}$ is unitary and $A \in \mathbb{C}^{n \times n}$,
@@ -115,6 +150,29 @@ end NAlg25
 
 
 namespace NAlg26
+
+/-- `singularValues A i` is the `i`-th singular value (0-based) of a real matrix `A`.
+It is defined as the square root of the `i`-th (decreasingly ordered) eigenvalue of
+the symmetric Gram matrix `Aᴴ * A`. -/
+noncomputable def singularValues {m p : ℕ} [NeZero m] [NeZero p] (A : Matrix (Fin m) (Fin p) ℂ) :
+    Fin p → ℝ := by
+  set M : Matrix (Fin p) (Fin p) ℂ := Aᴴ * A
+  have hM : M.IsHermitian := by
+    rw [IsHermitian, conjTranspose_mul, conjTranspose_conjTranspose]
+  have hT : (toEuclideanLin M).IsSymmetric :=
+    isHermitian_iff_isSymmetric.mp hM
+  exact fun i ↦ Real.sqrt (LinearMap.IsSymmetric.eigenvalues hT (by simp) i)
+
+noncomputable def minimum_singular_value {m n : ℕ} [NeZero m] [NeZero n]
+    (A : Matrix (Fin m) (Fin n) ℂ) : ℝ :=
+  singularValues A ⟨n - 1, Nat.sub_one_lt (NeZero.ne' n).symm⟩
+
+/--
+ε–pseudospectrum of a complex matrix A : Λ_ε(A) = { z ∈ ℂ | σ_min(A - zI) ≤ ε }
+-/
+noncomputable def pseudospectrum {n : ℕ} [NeZero n] (A : Matrix (Fin n) (Fin n) ℂ) (ε : ℝ) :
+    Set ℂ := { z : ℂ | minimum_singular_value (A - z • (1 : Matrix (Fin n) (Fin n) ℂ)) ≤ ε }
+
 
 /--
 Theorem 7.9.6. If
@@ -177,7 +235,27 @@ end NAlg27
 
 namespace NAlg28
 
-open Pointwise
+/-- `singularValues A i` is the `i`-th singular value (0-based) of a real matrix `A`.
+It is defined as the square root of the `i`-th (decreasingly ordered) eigenvalue of
+the symmetric Gram matrix `Aᴴ * A`. -/
+noncomputable def singularValues {m p : ℕ} [NeZero m] [NeZero p] (A : Matrix (Fin m) (Fin p) ℂ) :
+    Fin p → ℝ := by
+  set M : Matrix (Fin p) (Fin p) ℂ := Aᴴ * A
+  have hM : M.IsHermitian := by
+    rw [IsHermitian, conjTranspose_mul, conjTranspose_conjTranspose]
+  have hT : (toEuclideanLin M).IsSymmetric :=
+    isHermitian_iff_isSymmetric.mp hM
+  exact fun i ↦ Real.sqrt (LinearMap.IsSymmetric.eigenvalues hT (by simp) i)
+
+noncomputable def minimum_singular_value {m n : ℕ} [NeZero m] [NeZero n]
+    (A : Matrix (Fin m) (Fin n) ℂ) : ℝ :=
+  singularValues A ⟨n - 1, Nat.sub_one_lt (NeZero.ne' n).symm⟩
+
+/--
+ε–pseudospectrum of a complex matrix A : Λ_ε(A) = { z ∈ ℂ | σ_min(A - zI) ≤ ε }
+-/
+noncomputable def pseudospectrum {n : ℕ} [NeZero n] (A : Matrix (Fin n) (Fin n) ℂ) (ε : ℝ) :
+    Set ℂ := { z : ℂ | minimum_singular_value (A - z • (1 : Matrix (Fin n) (Fin n) ℂ)) ≤ ε }
 
 /--
 Theorem 7.9.4. If $D=\operatorname{diag}\left(\lambda_1, \ldots, \lambda_n\right)$, then $\Lambda_\epsilon(D)=\left\{\lambda_1, \ldots, \lambda_n\right\}+\Delta_\epsilon$.
@@ -192,7 +270,27 @@ end NAlg28
 
 namespace NAlg29
 
-open Pointwise
+/-- `singularValues A i` is the `i`-th singular value (0-based) of a real matrix `A`.
+It is defined as the square root of the `i`-th (decreasingly ordered) eigenvalue of
+the symmetric Gram matrix `Aᴴ * A`. -/
+noncomputable def singularValues {m p : ℕ} [NeZero m] [NeZero p] (A : Matrix (Fin m) (Fin p) ℂ) :
+    Fin p → ℝ := by
+  set M : Matrix (Fin p) (Fin p) ℂ := Aᴴ * A
+  have hM : M.IsHermitian := by
+    rw [IsHermitian, conjTranspose_mul, conjTranspose_conjTranspose]
+  have hT : (toEuclideanLin M).IsSymmetric :=
+    isHermitian_iff_isSymmetric.mp hM
+  exact fun i ↦ Real.sqrt (LinearMap.IsSymmetric.eigenvalues hT (by simp) i)
+
+noncomputable def minimum_singular_value {m n : ℕ} [NeZero m] [NeZero n]
+    (A : Matrix (Fin m) (Fin n) ℂ) : ℝ :=
+  singularValues A ⟨n - 1, Nat.sub_one_lt (NeZero.ne' n).symm⟩
+
+/--
+ε–pseudospectrum of a complex matrix A : Λ_ε(A) = { z ∈ ℂ | σ_min(A - zI) ≤ ε }
+-/
+noncomputable def pseudospectrum {n : ℕ} [NeZero n] (A : Matrix (Fin n) (Fin n) ℂ) (ε : ℝ) :
+    Set ℂ := { z : ℂ | minimum_singular_value (A - z • (1 : Matrix (Fin n) (Fin n) ℂ)) ≤ ε }
 
 /--
 Corollary 7.9.5. If $A \in \mathbb{C}^{n \times n}$ is normal, then $\Lambda_\epsilon(A)=\Lambda(A)+\Delta_\epsilon$. All the matrix are real matrix
@@ -208,6 +306,28 @@ end NAlg29
 namespace NAlg30
 
 attribute [instance] instL2OpNormedAddCommGroup
+
+/-- `singularValues A i` is the `i`-th singular value (0-based) of a real matrix `A`.
+It is defined as the square root of the `i`-th (decreasingly ordered) eigenvalue of
+the symmetric Gram matrix `Aᴴ * A`. -/
+noncomputable def singularValues {m p : ℕ} [NeZero m] [NeZero p] (A : Matrix (Fin m) (Fin p) ℂ) :
+    Fin p → ℝ := by
+  set M : Matrix (Fin p) (Fin p) ℂ := Aᴴ * A
+  have hM : M.IsHermitian := by
+    rw [IsHermitian, conjTranspose_mul, conjTranspose_conjTranspose]
+  have hT : (toEuclideanLin M).IsSymmetric :=
+    isHermitian_iff_isSymmetric.mp hM
+  exact fun i ↦ Real.sqrt (LinearMap.IsSymmetric.eigenvalues hT (by simp) i)
+
+noncomputable def minimum_singular_value {m n : ℕ} [NeZero m] [NeZero n]
+    (A : Matrix (Fin m) (Fin n) ℂ) : ℝ :=
+  singularValues A ⟨n - 1, Nat.sub_one_lt (NeZero.ne' n).symm⟩
+
+/--
+ε–pseudospectrum of a complex matrix A : Λ_ε(A) = { z ∈ ℂ | σ_min(A - zI) ≤ ε }
+-/
+noncomputable def pseudospectrum {n : ℕ} [NeZero n] (A : Matrix (Fin n) (Fin n) ℂ) (ε : ℝ) :
+    Set ℂ := { z : ℂ | minimum_singular_value (A - z • (1 : Matrix (Fin n) (Fin n) ℂ)) ≤ ε }
 
 /--
 Theorem 7.9.8. If $z_0 \in \mathbb{C}$ and $A \in \mathbb{C}^{n \times n}$, then
@@ -227,6 +347,22 @@ end NAlg30
 namespace NAlg31
 
 attribute [instance] instL2OpNormedAddCommGroup
+
+/-- `singularValues A i` is the `i`-th singular value (0-based) of a real matrix `A`.
+It is defined as the square root of the `i`-th (decreasingly ordered) eigenvalue of
+the symmetric Gram matrix `Aᴴ * A`. -/
+noncomputable def singularValues {m p : ℕ} [NeZero m] [NeZero p] (A : Matrix (Fin m) (Fin p) ℂ) :
+    Fin p → ℝ := by
+  set M : Matrix (Fin p) (Fin p) ℂ := Aᴴ * A
+  have hM : M.IsHermitian := by
+    rw [IsHermitian, conjTranspose_mul, conjTranspose_conjTranspose]
+  have hT : (toEuclideanLin M).IsSymmetric :=
+    isHermitian_iff_isSymmetric.mp hM
+  exact fun i ↦ Real.sqrt (LinearMap.IsSymmetric.eigenvalues hT (by simp) i)
+
+noncomputable def minimum_singular_value {m n : ℕ} [NeZero m] [NeZero n]
+    (A : Matrix (Fin m) (Fin n) ℂ) : ℝ :=
+  singularValues A ⟨n - 1, Nat.sub_one_lt (NeZero.ne' n).symm⟩
 
 /--
 P6.5.4 Assume that
@@ -315,5 +451,3 @@ theorem problem_8_4_8_b (n : ℕ) (hn : n > 0) (d : Fin (n - 1) → ℝ) (v : Fi
   sorry
 
 end NAlg32
-
-end P3
