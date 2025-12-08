@@ -6,4 +6,3 @@ import Benchmark.NAlg_easy_50_55
 import Benchmark.NAlg_proof_12_21
 import Benchmark.NAlg_proof_1_11
 import Benchmark.NAlg_proof_22_32
-import Benchmark.testfield

@@ -23,6 +23,7 @@ end NAlg_P34
 namespace NAlg_A1
 
 variable {n : ℕ} {L K : Matrix (Fin n) (Fin n) ℝ} (B : Matrix (Fin n) (Fin n) ℝ)
+
 variable (hL : L.BlockTriangular OrderDual.toDual) (hK : K.BlockTriangular OrderDual.toDual)
 
 def algorithm (hL : L.BlockTriangular OrderDual.toDual) (hK : K.BlockTriangular OrderDual.toDual)

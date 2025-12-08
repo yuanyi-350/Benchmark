@@ -234,33 +234,32 @@ end NAlg_P27
 
 namespace NAlg_P28
 
+variable {m n : ℕ} [NeZero m] [NeZero n]
+
 /-- `singularValues A i` is the `i`-th singular value (0-based) of a real matrix `A`.
 It is defined as the square root of the `i`-th (decreasingly ordered) eigenvalue of
 the symmetric Gram matrix `Aᴴ * A`. -/
-noncomputable def singularValues {m p : ℕ} [NeZero m] [NeZero p] (A : Matrix (Fin m) (Fin p) ℂ) :
-    Fin p → ℝ := by
-  set M : Matrix (Fin p) (Fin p) ℂ := Aᴴ * A
+noncomputable def singularValues (A : Matrix (Fin m) (Fin n) ℂ) : Fin n → ℝ := by
+  set M : Matrix (Fin n) (Fin n) ℂ := Aᴴ * A
   have hM : M.IsHermitian := by
     rw [IsHermitian, conjTranspose_mul, conjTranspose_conjTranspose]
   have hT : (toEuclideanLin M).IsSymmetric :=
     isHermitian_iff_isSymmetric.mp hM
   exact fun i ↦ Real.sqrt (LinearMap.IsSymmetric.eigenvalues hT (by simp) i)
 
-noncomputable def minimum_singular_value {m n : ℕ} [NeZero m] [NeZero n]
-    (A : Matrix (Fin m) (Fin n) ℂ) : ℝ :=
+noncomputable def minimum_singular_value (A : Matrix (Fin m) (Fin n) ℂ) : ℝ :=
   singularValues A ⟨n - 1, Nat.sub_one_lt (NeZero.ne' n).symm⟩
 
 /--
 ε–pseudospectrum of a complex matrix A : Λ_ε(A) = { z ∈ ℂ | σ_min(A - zI) ≤ ε }
 -/
-noncomputable def pseudospectrum {n : ℕ} [NeZero n] (A : Matrix (Fin n) (Fin n) ℂ) (ε : ℝ) :
+noncomputable def pseudospectrum (A : Matrix (Fin n) (Fin n) ℂ) (ε : ℝ) :
     Set ℂ := { z : ℂ | minimum_singular_value (A - z • (1 : Matrix (Fin n) (Fin n) ℂ)) ≤ ε }
 
 /--
 Theorem 7.9.4. If $D=\operatorname{diag}\left(\lambda_1, \ldots, \lambda_n\right)$, then $\Lambda_\epsilon(D)=\left\{\lambda_1, \ldots, \lambda_n\right\}+\Delta_\epsilon$.
 -/
-theorem pseudospectrum_diagonal_eq_spectrum_plus_ball {n : ℕ} [NeZero n] (v : Fin n → ℂ) (ε : ℝ)
-    (hε : ε > 0) :
+theorem pseudospectrum_diagonal_eq_spectrum_plus_ball (v : Fin n → ℂ) {ε : ℝ} (hε : ε > 0) :
     pseudospectrum (diagonal v) ε = (Set.range fun i ↦ v i) + Metric.closedBall (0 : ℂ) ε := by
   sorry
 
@@ -270,33 +269,33 @@ end NAlg_P28
 
 namespace NAlg_P29
 
+variable {m n : ℕ} [NeZero m] [NeZero n]
+
 /-- `singularValues A i` is the `i`-th singular value (0-based) of a real matrix `A`.
 It is defined as the square root of the `i`-th (decreasingly ordered) eigenvalue of
 the symmetric Gram matrix `Aᴴ * A`. -/
-noncomputable def singularValues {m p : ℕ} [NeZero m] [NeZero p] (A : Matrix (Fin m) (Fin p) ℂ) :
-    Fin p → ℝ := by
-  set M : Matrix (Fin p) (Fin p) ℂ := Aᴴ * A
+noncomputable def singularValues (A : Matrix (Fin m) (Fin n) ℂ) : Fin n → ℝ := by
+  set M : Matrix (Fin n) (Fin n) ℂ := Aᴴ * A
   have hM : M.IsHermitian := by
     rw [IsHermitian, conjTranspose_mul, conjTranspose_conjTranspose]
   have hT : (toEuclideanLin M).IsSymmetric :=
     isHermitian_iff_isSymmetric.mp hM
   exact fun i ↦ Real.sqrt (LinearMap.IsSymmetric.eigenvalues hT (by simp) i)
 
-noncomputable def minimum_singular_value {m n : ℕ} [NeZero m] [NeZero n]
-    (A : Matrix (Fin m) (Fin n) ℂ) : ℝ :=
+noncomputable def minimum_singular_value (A : Matrix (Fin m) (Fin n) ℂ) : ℝ :=
   singularValues A ⟨n - 1, Nat.sub_one_lt (NeZero.ne' n).symm⟩
 
 /--
 ε–pseudospectrum of a complex matrix A : Λ_ε(A) = { z ∈ ℂ | σ_min(A - zI) ≤ ε }
 -/
-noncomputable def pseudospectrum {n : ℕ} [NeZero n] (A : Matrix (Fin n) (Fin n) ℂ) (ε : ℝ) :
+noncomputable def pseudospectrum (A : Matrix (Fin n) (Fin n) ℂ) (ε : ℝ) :
     Set ℂ := { z : ℂ | minimum_singular_value (A - z • (1 : Matrix (Fin n) (Fin n) ℂ)) ≤ ε }
 
 /--
 Corollary 7.9.5. If $A \in \mathbb{C}^{n \times n}$ is normal, then $\Lambda_\epsilon(A)=\Lambda(A)+\Delta_\epsilon$. All the matrix are real matrix
 -/
-theorem pseudospectrum_normal_eq_spectrum_plus_ball {n : ℕ} [NeZero n]
-    (A : Matrix (Fin n) (Fin n) ℂ)  (hA : A * Aᴴ = Aᴴ * A) (ε : ℝ) (hε : 0 < ε) :
+theorem pseudospectrum_normal_eq_spectrum_plus_ball (A : Matrix (Fin n) (Fin n) ℂ)
+    (hA : A * Aᴴ = Aᴴ * A) {ε : ℝ} (hε : 0 < ε) :
     pseudospectrum A ε = spectrum ℂ A + Metric.closedBall (0 : ℂ) ε := by
   sorry
 
@@ -308,26 +307,26 @@ namespace NAlg_P30
 
 attribute [instance] instL2OpNormedAddCommGroup
 
+variable {m n : ℕ} [NeZero m] [NeZero n]
+
 /-- `singularValues A i` is the `i`-th singular value (0-based) of a real matrix `A`.
 It is defined as the square root of the `i`-th (decreasingly ordered) eigenvalue of
 the symmetric Gram matrix `Aᴴ * A`. -/
-noncomputable def singularValues {m p : ℕ} [NeZero m] [NeZero p] (A : Matrix (Fin m) (Fin p) ℂ) :
-    Fin p → ℝ := by
-  set M : Matrix (Fin p) (Fin p) ℂ := Aᴴ * A
+noncomputable def singularValues (A : Matrix (Fin m) (Fin n) ℂ) : Fin n → ℝ := by
+  set M : Matrix (Fin n) (Fin n) ℂ := Aᴴ * A
   have hM : M.IsHermitian := by
     rw [IsHermitian, conjTranspose_mul, conjTranspose_conjTranspose]
   have hT : (toEuclideanLin M).IsSymmetric :=
     isHermitian_iff_isSymmetric.mp hM
   exact fun i ↦ Real.sqrt (LinearMap.IsSymmetric.eigenvalues hT (by simp) i)
 
-noncomputable def minimum_singular_value {m n : ℕ} [NeZero m] [NeZero n]
-    (A : Matrix (Fin m) (Fin n) ℂ) : ℝ :=
+noncomputable def minimum_singular_value (A : Matrix (Fin m) (Fin n) ℂ) : ℝ :=
   singularValues A ⟨n - 1, Nat.sub_one_lt (NeZero.ne' n).symm⟩
 
 /--
 ε–pseudospectrum of a complex matrix A : Λ_ε(A) = { z ∈ ℂ | σ_min(A - zI) ≤ ε }
 -/
-noncomputable def pseudospectrum {n : ℕ} [NeZero n] (A : Matrix (Fin n) (Fin n) ℂ) (ε : ℝ) :
+noncomputable def pseudospectrum (A : Matrix (Fin n) (Fin n) ℂ) (ε : ℝ) :
     Set ℂ := { z : ℂ | minimum_singular_value (A - z • (1 : Matrix (Fin n) (Fin n) ℂ)) ≤ ε }
 
 /--
@@ -337,9 +336,8 @@ $$
 \operatorname{dist}\left(z_0, \Lambda_\epsilon(A)\right) \geq \frac{1}{\left\|\left(z_0 I-A\right)^{-1}\right\|_2} - \epsilon .
 $$
 -/
-theorem pseudospectrum_distance_lower_bound {n : ℕ} [NeZero n] (A : Matrix (Fin n) (Fin n) ℂ)
-    (z₀ : ℂ) (ε : ℝ) (hε : 0 < ε) :
-    Metric.infDist z₀ (pseudospectrum A ε) ≥ 1 / ‖(z₀ • 1 - A)⁻¹‖ - ε := by
+theorem pseudospectrum_distance_lower_bound (A : Matrix (Fin n) (Fin n) ℂ) (z₀ : ℂ) {ε : ℝ}
+    (hε : 0 < ε) : Metric.infDist z₀ (pseudospectrum A ε) ≥ 1 / ‖(z₀ • 1 - A)⁻¹‖ - ε := by
   sorry
 
 end NAlg_P30
@@ -350,20 +348,20 @@ namespace NAlg_P31
 
 attribute [instance] instL2OpNormedAddCommGroup
 
+variable {m n : ℕ} [NeZero m] [NeZero n]
+
 /-- `singularValues A i` is the `i`-th singular value (0-based) of a real matrix `A`.
 It is defined as the square root of the `i`-th (decreasingly ordered) eigenvalue of
 the symmetric Gram matrix `Aᴴ * A`. -/
-noncomputable def singularValues {m p : ℕ} [NeZero m] [NeZero p] (A : Matrix (Fin m) (Fin p) ℂ) :
-    Fin p → ℝ := by
-  set M : Matrix (Fin p) (Fin p) ℂ := Aᴴ * A
+noncomputable def singularValues (A : Matrix (Fin m) (Fin n) ℂ) : Fin n → ℝ := by
+  set M : Matrix (Fin n) (Fin n) ℂ := Aᴴ * A
   have hM : M.IsHermitian := by
     rw [IsHermitian, conjTranspose_mul, conjTranspose_conjTranspose]
   have hT : (toEuclideanLin M).IsSymmetric :=
     isHermitian_iff_isSymmetric.mp hM
   exact fun i ↦ Real.sqrt (LinearMap.IsSymmetric.eigenvalues hT (by simp) i)
 
-noncomputable def minimum_singular_value {m n : ℕ} [NeZero m] [NeZero n]
-    (A : Matrix (Fin m) (Fin n) ℂ) : ℝ :=
+noncomputable def minimum_singular_value (A : Matrix (Fin m) (Fin n) ℂ) : ℝ :=
   singularValues A ⟨n - 1, Nat.sub_one_lt (NeZero.ne' n).symm⟩
 
 /--
@@ -402,12 +400,12 @@ $$
 
 then $\left\|H_1\right\|_2 \leq \rho\|H\|_2$.
 -/
-theorem orthogonal_transform_block_norm_bound {n p : ℕ} [NeZero n] [NeZero p]
-    (R : Matrix (Fin n) (Fin n) ℝ) (H : Matrix (Fin n) (Fin p) ℝ) (E : Matrix (Fin p) (Fin p) ℝ)
-    (ρ : ℝ) (hρ : ρ = ‖E‖ / minimum_singular_value (R.map (algebraMap ℝ ℂ))) (hlt : ρ < 1)
-    (Q : Matrix ((Fin n) ⊕ (Fin p)) ((Fin n) ⊕ (Fin p)) ℝ)
-    (hQ : Q ∈ orthogonalGroup ((Fin n) ⊕ (Fin p)) ℝ) (R₁ : Matrix (Fin n) (Fin n) ℝ)
-    (H₁ : Matrix (Fin p) (Fin n) ℝ) (E₁ : Matrix (Fin p) (Fin p) ℝ) :
+theorem orthogonal_transform_block_norm_bound (R : Matrix (Fin m) (Fin m) ℝ)
+    (H : Matrix (Fin m) (Fin n) ℝ) (E : Matrix (Fin n) (Fin n) ℝ) (ρ : ℝ)
+    (hρ : ρ = ‖E‖ / minimum_singular_value (R.map (algebraMap ℝ ℂ))) (hlt : ρ < 1)
+    (Q : Matrix ((Fin m) ⊕ (Fin n)) ((Fin m) ⊕ (Fin n)) ℝ)
+    (hQ : Q ∈ orthogonalGroup ((Fin m) ⊕ (Fin n)) ℝ) (R₁ : Matrix (Fin m) (Fin m) ℝ)
+    (H₁ : Matrix (Fin n) (Fin m) ℝ) (E₁ : Matrix (Fin n) (Fin n) ℝ) :
     fromBlocks R H 0 E * Q = fromBlocks R₁ 0 H₁ E₁ → ‖H₁‖ ≤ ρ * ‖H‖ := by
   sorry
 

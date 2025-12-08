@@ -10,7 +10,7 @@ open scoped Norms.Frobenius
 
 variable {m n : ℕ} [NeZero m] [NeZero n]
 
-def algorithm  (A B : Matrix (Fin m) (Fin n) ℝ) (hA : rank A = n) :
+def algorithm (A B : Matrix (Fin m) (Fin n) ℝ) (hA : rank A = n) :
     ℕ → Matrix (Fin n) (Fin n) ℝ := fun k => match k with
   | 0 => 0
   | k + 1 => sorry
@@ -90,7 +90,7 @@ namespace NAlg_A10
 
 variable {m n p : ℕ} [NeZero m] [NeZero n] [NeZero p]
 
-variable{A : Matrix (Fin m) (Fin n) ℝ} {B : Matrix (Fin p) (Fin n) ℝ}
+variable {A : Matrix (Fin m) (Fin n) ℝ} {B : Matrix (Fin p) (Fin n) ℝ}
 
 def algorithm (hA : rank A = n) (hB : rank B = p) (b : Fin m → ℝ) : Fin n → ℝ := by
   sorry
