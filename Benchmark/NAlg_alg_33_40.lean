@@ -3,15 +3,14 @@ import Mathlib
 open Matrix WithLp
 
 
-section NAlg_P34
+namespace NAlg_P34
 
 /--
 $$
 \frac{\partial \operatorname{det}(\mathbf{Y})}{\partial x}=\operatorname{det}(\mathbf{Y}) \operatorname{Tr}\left[\mathbf{Y}^{-1} \frac{\partial \mathbf{Y}}{\partial x}\right]
 $$
 -/
-theorem det_derivative_trace_formula {n : ℕ}
-    (Y : ℝ → Matrix (Fin n) (Fin n) ℝ) (x : ℝ)
+theorem det_derivative_trace_formula {n : ℕ} (Y : ℝ → Matrix (Fin n) (Fin n) ℝ) (x : ℝ)
     (hY : IsUnit (Y x)) (hYdiff : DifferentiableAt ℝ Y x) :
     deriv (fun t => det (Y t)) x = det (Y x) * trace ((Y x)⁻¹ * deriv Y x) := by
   sorry
@@ -62,7 +61,7 @@ theorem hermitian_unitary_tridiagonal (hA : A.IsHermitian) :
       algorithm hA n ∈ unitaryGroup (Fin n) ℂ ∧
       IsHermitian ((algorithm hA n)ᴴ * A * (algorithm hA n)) ∧
       IsSymm ((algorithm hA n)ᴴ * A * (algorithm hA n)) ∧
-      ((algorithm hA n) * A * (algorithm hA n)).BlockTriangular OrderDual.toDual := sorry
+      IsTridiagonal ((algorithm hA n) * A * (algorithm hA n)) := sorry
 
 end NAlg_A2
 
@@ -155,6 +154,7 @@ theorem zero_matrix_feasible (hδ : 0 ≤ δ) (r : Fin m → ℝ) (y : Fin n →
   sorry
 
 end NAlg_A5
+
 
 
 namespace NAlg_A6

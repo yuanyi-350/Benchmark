@@ -220,10 +220,10 @@ S^{-1} B^T A^{-1} & S^{-1}
 \end{array}\right], \quad S=C-B^T A^{-1} B .
 $$
 -/
-theorem schur_complement_inverse_formula {l m : Type*} [Fintype l] [DecidableEq l] [Fintype m] [DecidableEq m]
-    (A : Matrix l l ℝ) (B : Matrix l m ℝ) (C : Matrix m m ℝ)
+theorem schur_complement_inverse_formula {l m : Type*} [Fintype l] [DecidableEq l] [Fintype m]
+    [DecidableEq m] (A : Matrix l l ℝ) (B : Matrix l m ℝ) (C : Matrix m m ℝ) [Invertible A]
     (M : Matrix (l ⊕ m) (l ⊕ m) ℝ) (hM : M = fromBlocks A B Bᵀ C) (hPosDef : PosDef M)
-    (S : Matrix m m ℝ) (hS : S = C - Bᵀ * A⁻¹ * B) :
+    (S : Matrix m m ℝ) (hS : S = C - Bᵀ * A⁻¹ * B) [Invertible S]:
     M⁻¹ = fromBlocks (A⁻¹ + A⁻¹ * B * S⁻¹ * Bᵀ * A⁻¹) (- A⁻¹ * B * S⁻¹)
                      (- S⁻¹ * Bᵀ * A⁻¹) (S⁻¹) := by
   sorry

@@ -230,22 +230,20 @@ end NAlg_P19
 
 namespace NAlg_P20
 
-/--
-`singularValues A i` is the `i`-th singular value (0-based) of a real matrix `A`.
+variable {m n : ℕ} [NeZero m] [NeZero n]
+
+/-- `singularValues A i` is the `i`-th singular value (0-based) of a real matrix `A`.
 It is defined as the square root of the `i`-th (decreasingly ordered) eigenvalue of
-the symmetric Gram matrix `Aᵀ * A`.
--/
-noncomputable def singularValues {m p : ℕ} [NeZero m] [NeZero p] (A : Matrix (Fin m) (Fin p) ℝ) :
-    Fin p → ℝ := by
-  set M : Matrix (Fin p) (Fin p) ℝ := Aᵀ * A
-  have hSymm : IsSymm M := by
-    rw [Matrix.IsSymm, transpose_mul, transpose_transpose]
+the symmetric Gram matrix `Aᴴ * A`. -/
+noncomputable def singularValues (A : Matrix (Fin m) (Fin n) ℝ) : Fin n → ℝ := by
+  set M : Matrix (Fin n) (Fin n) ℝ := Aᴴ * A
+  have hM : M.IsHermitian := by
+    rw [IsHermitian, conjTranspose_mul, conjTranspose_conjTranspose]
   have hT : (toEuclideanLin M).IsSymmetric :=
-    isHermitian_iff_isSymmetric.mp hSymm
+    isHermitian_iff_isSymmetric.mp hM
   exact fun i ↦ Real.sqrt (LinearMap.IsSymmetric.eigenvalues hT (by simp) i)
 
-noncomputable def minimum_singular_value {m n : ℕ} [NeZero m] [NeZero n]
-    (A : Matrix (Fin m) (Fin n) ℝ) : ℝ :=
+noncomputable def minimum_singular_value (A : Matrix (Fin m) (Fin n) ℝ) : ℝ :=
   singularValues A ⟨n - 1, Nat.sub_one_lt (NeZero.ne' n).symm⟩
 
 /--
@@ -264,9 +262,8 @@ $$
 \frac{1}{\sigma_{\min }(B)} \leq \frac{1}{\sigma_{\min }(A)}+\frac{\left\|\left(A^T A\right)^{-1} c\right\|_2^2}{1-c^T\left(A^T A\right)^{-1} c}
 $$ All the matrix are real matrix
 -/
-theorem minimum_singular_value_bound_for_augmented_matrix {m n : ℕ} [NeZero m] [NeZero n]
-    (h : m > n) (c : Fin n → ℝ) (B : Matrix (Fin (m - 1)) (Fin n) ℝ) (A : Matrix (Fin m) (Fin n) ℝ)
-    (fullRank : rank A = n)
+theorem minimum_singular_value_bound_for_augmented_matrix (h : m > n) (c : Fin n → ℝ)
+    (B : Matrix (Fin (m - 1)) (Fin n) ℝ) (A : Matrix (Fin m) (Fin n) ℝ) (fullRank : rank A = n)
     (hA : A = of (fun (i : Fin m) j => if h : (i : ℕ) = 0 then c j
       else B ⟨(i : ℕ) - 1, by omega⟩ j)) :
     haveI : NeZero (m - 1) :=

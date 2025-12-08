@@ -203,13 +203,14 @@ attribute [local instance] frobeniusSeminormedAddCommGroup
 -- example {p : ℕ} (P : Matrix (Fin p) (Fin p) ℝ) :
 --   ‖P‖ = (∑ i, ∑ j, ‖P i j‖ ^ (2 : ℝ)) ^ ((1 : ℝ) / 2) := frobenius_norm_def P
 
+variable {m p : ℕ} [NeZero m] [NeZero p]
+
 /--
 `singularValues A i` is the `i`-th singular value (0-based) of a real matrix `A`.
 It is defined as the square root of the `i`-th (decreasingly ordered) eigenvalue of
 the symmetric Gram matrix `Aᵀ * A`.
 -/
-noncomputable def singularValues {m p : ℕ} [NeZero m] [NeZero p] (A : Matrix (Fin m) (Fin p) ℝ) :
-    Fin p → ℝ := by
+noncomputable def singularValues (A : Matrix (Fin m) (Fin p) ℝ) : Fin p → ℝ := by
   set M : Matrix (Fin p) (Fin p) ℝ := Aᵀ * A
   have hSymm : IsSymm M := by
     rw [Matrix.IsSymm, transpose_mul, transpose_transpose]
@@ -225,8 +226,8 @@ $$
 = \sum_{i=1}^p\left(\sigma_i(A)^2 - 2 \sigma_i\left(B^T A\right) + \sigma_i(B)^2\right) .
 $$
 -/
-theorem exercise_p6_4_1 {m p : ℕ} [NeZero m] [NeZero p] (A B : Matrix (Fin m) (Fin p) ℝ)
-    (hp : p ≤ m) : sInf {x : ℝ | ∃ Q ∈ orthogonalGroup (Fin p) ℝ,  x = ‖A - B * Q‖ ^ 2} =
+theorem exercise_p6_4_1 (A B : Matrix (Fin m) (Fin p) ℝ) (hp : p ≤ m) :
+    sInf {x : ℝ | ∃ Q ∈ orthogonalGroup (Fin p) ℝ,  x = ‖A - B * Q‖ ^ 2} =
     ∑ i : Fin p, ((singularValues A i) ^ 2 - 2 * singularValues (Bᵀ * A) i
     + (singularValues B i) ^ 2) := by
   sorry
