@@ -6,7 +6,7 @@ open Matrix WithLp Pointwise
 
 
 
-namespace NAlg22
+namespace NAlg_P22
 
 /-- `singularValues A i` is the `i`-th singular value (0-based) of a real matrix `A`.
 It is defined as the square root of the `i`-th (decreasingly ordered) eigenvalue of
@@ -34,11 +34,11 @@ lemma minimum_singular_value_prop  {m n : ℕ} [NeZero m] [NeZero n] (A : Matrix
     sInf { y | ∃ v : Fin n → ℂ , ‖toLp 2 v‖ = 1 ∧ y = ‖toLp 2 (A *ᵥ v)‖} := by
   sorry
 
-end NAlg22
+end NAlg_P22
 
 
 
-namespace NAlg23
+namespace NAlg_P23
 
 /-- `singularValues A i` is the `i`-th singular value (0-based) of a real matrix `A`.
 It is defined as the square root of the `i`-th (decreasingly ordered) eigenvalue of
@@ -71,16 +71,16 @@ noncomputable def kappa2 {n : ℕ} (X : Matrix (Fin n) (Fin n) ℂ) : ℝ :=
 /--
 Theorem 7.9.2. If $B=X^{-1} A X$, then $\Lambda_\epsilon(B) \subseteq \Lambda_{\epsilon \kappa_2(X)}(A)$.
 -/
-theorem theorem_7_9_2 {n : ℕ} [NeZero n]
+theorem pseudospectrum_similarity_bound {n : ℕ} [NeZero n]
     (A X : Matrix (Fin n) (Fin n) ℂ) [Invertible X] (ε : ℝ) (hε : ε > 0) :
     pseudospectrum (X⁻¹ * A * X) ε ⊆ pseudospectrum A (ε * kappa2 X) := by
   sorry
 
-end NAlg23
+end NAlg_P23
 
 
 
-namespace NAlg24
+namespace NAlg_P24
 
 /-- `singularValues A i` is the `i`-th singular value (0-based) of a real matrix `A`.
 It is defined as the square root of the `i`-th (decreasingly ordered) eigenvalue of
@@ -109,17 +109,16 @@ Corollary 7.9.3. If $X \in \mathbb{C}^{n \times n}$ is unitary and $A \in \mathb
 
 then $\Lambda_\epsilon\left(X^{-1} A X\right)=\Lambda_\epsilon(A)$.
 -/
-
-theorem corollary_7_9_3 {n : ℕ} [NeZero n] (A X : Matrix (Fin n) (Fin n) ℂ)
+theorem pseudospectrum_unitary_conjugation {n : ℕ} [NeZero n] (A X : Matrix (Fin n) (Fin n) ℂ)
     (hX : X ∈ unitaryGroup (Fin n) ℂ) (ε : ℝ) (hε : ε > 0) :
     pseudospectrum (X⁻¹ * A * X) ε = pseudospectrum A ε  :=
   sorry
 
-end NAlg24
+end NAlg_P24
 
 
 
-namespace NAlg25
+namespace NAlg_P25
 
 attribute [instance] instL2OpNormedAddCommGroup
 
@@ -138,18 +137,18 @@ $$
 
 for $k=1: r$.
 -/
-theorem theorem_8_1_13 {n r : ℕ} [NeZero n] [NeZero r] (A : Matrix (Fin n) (Fin n) ℝ)
-    (S : Matrix (Fin r) (Fin r) ℝ) (hA : IsSymm A) (hS : IsSymm S)
+theorem symmetric_eigenvalue_perturbation {n r : ℕ} [NeZero n] [NeZero r]
+    (A : Matrix (Fin n) (Fin n) ℝ) (S : Matrix (Fin r) (Fin r) ℝ) (hA : IsSymm A) (hS : IsSymm S)
     (Q₁ E₁ : Matrix (Fin n) (Fin r) ℝ) (hQ₁ : Q₁ᵀ * Q₁ = 1) : ∃ μ : Fin r → spectrum ℝ A,
     ∀ (k : Fin r), |(μ k : ℝ) - LinearMap.IsSymmetric.eigenvalues
     (isHermitian_iff_isSymmetric.mp hS) (n := r) (by simp) k| ≤ Real.sqrt 2 * ‖E₁‖ := by
   sorry
 
-end NAlg25
+end NAlg_P25
 
 
 
-namespace NAlg26
+namespace NAlg_P26
 
 /-- `singularValues A i` is the `i`-th singular value (0-based) of a real matrix `A`.
 It is defined as the square root of the `i`-th (decreasingly ordered) eigenvalue of
@@ -196,11 +195,11 @@ theorem pseudospectrum_block_triangular_inclusion {n m : ℕ} [NeZero n] [NeZero
       (equiv i) (equiv j)) ε := by
   sorry
 
-end NAlg26
+end NAlg_P26
 
 
 
-namespace NAlg27
+namespace NAlg_P27
 
 /--
 P4.2.12 Show that if
@@ -229,11 +228,11 @@ theorem schur_complement_inverse_formula {l m : Type*} [Fintype l] [DecidableEq 
                      (- S⁻¹ * Bᵀ * A⁻¹) (S⁻¹) := by
   sorry
 
-end NAlg27
+end NAlg_P27
 
 
 
-namespace NAlg28
+namespace NAlg_P28
 
 /-- `singularValues A i` is the `i`-th singular value (0-based) of a real matrix `A`.
 It is defined as the square root of the `i`-th (decreasingly ordered) eigenvalue of
@@ -260,15 +259,16 @@ noncomputable def pseudospectrum {n : ℕ} [NeZero n] (A : Matrix (Fin n) (Fin n
 /--
 Theorem 7.9.4. If $D=\operatorname{diag}\left(\lambda_1, \ldots, \lambda_n\right)$, then $\Lambda_\epsilon(D)=\left\{\lambda_1, \ldots, \lambda_n\right\}+\Delta_\epsilon$.
 -/
-theorem theorem_7_9_4 {n : ℕ} [NeZero n] (v : Fin n → ℂ) (ε : ℝ) (hε : ε > 0) :
+theorem pseudospectrum_diagonal_eq_spectrum_plus_ball {n : ℕ} [NeZero n] (v : Fin n → ℂ) (ε : ℝ)
+    (hε : ε > 0) :
     pseudospectrum (diagonal v) ε = (Set.range fun i ↦ v i) + Metric.closedBall (0 : ℂ) ε := by
   sorry
 
-end NAlg28
+end NAlg_P28
 
 
 
-namespace NAlg29
+namespace NAlg_P29
 
 /-- `singularValues A i` is the `i`-th singular value (0-based) of a real matrix `A`.
 It is defined as the square root of the `i`-th (decreasingly ordered) eigenvalue of
@@ -295,15 +295,16 @@ noncomputable def pseudospectrum {n : ℕ} [NeZero n] (A : Matrix (Fin n) (Fin n
 /--
 Corollary 7.9.5. If $A \in \mathbb{C}^{n \times n}$ is normal, then $\Lambda_\epsilon(A)=\Lambda(A)+\Delta_\epsilon$. All the matrix are real matrix
 -/
-theorem corollary_7_9_5 {n : ℕ} (A : Matrix (Fin n) (Fin n) ℂ) [NeZero n] (hA : A * Aᴴ = Aᴴ * A)
-    (ε : ℝ) (hε : 0 < ε) : pseudospectrum A ε = spectrum ℂ A + Metric.closedBall (0 : ℂ) ε := by
+theorem pseudospectrum_normal_eq_spectrum_plus_ball {n : ℕ} [NeZero n]
+    (A : Matrix (Fin n) (Fin n) ℂ)  (hA : A * Aᴴ = Aᴴ * A) (ε : ℝ) (hε : 0 < ε) :
+    pseudospectrum A ε = spectrum ℂ A + Metric.closedBall (0 : ℂ) ε := by
   sorry
 
-end NAlg29
+end NAlg_P29
 
 
 
-namespace NAlg30
+namespace NAlg_P30
 
 attribute [instance] instL2OpNormedAddCommGroup
 
@@ -336,15 +337,16 @@ $$
 \operatorname{dist}\left(z_0, \Lambda_\epsilon(A)\right) \geq \frac{1}{\left\|\left(z_0 I-A\right)^{-1}\right\|_2} - \epsilon .
 $$
 -/
-theorem theorem_7_9_8 {n : ℕ} [NeZero n] (A : Matrix (Fin n) (Fin n) ℂ) (z₀ : ℂ) (ε : ℝ)
-    (hε : 0 < ε) : Metric.infDist z₀ (pseudospectrum A ε) ≥ 1 / ‖(z₀ • 1 - A)⁻¹‖ - ε := by
+theorem pseudospectrum_distance_lower_bound {n : ℕ} [NeZero n] (A : Matrix (Fin n) (Fin n) ℂ)
+    (z₀ : ℂ) (ε : ℝ) (hε : 0 < ε) :
+    Metric.infDist z₀ (pseudospectrum A ε) ≥ 1 / ‖(z₀ • 1 - A)⁻¹‖ - ε := by
   sorry
 
-end NAlg30
+end NAlg_P30
 
 
 
-namespace NAlg31
+namespace NAlg_P31
 
 attribute [instance] instL2OpNormedAddCommGroup
 
@@ -400,7 +402,7 @@ $$
 
 then $\left\|H_1\right\|_2 \leq \rho\|H\|_2$.
 -/
-theorem exercise_P6_5_4 {n p : ℕ} [NeZero n] [NeZero p]
+theorem orthogonal_transform_block_norm_bound {n p : ℕ} [NeZero n] [NeZero p]
     (R : Matrix (Fin n) (Fin n) ℝ) (H : Matrix (Fin n) (Fin p) ℝ) (E : Matrix (Fin p) (Fin p) ℝ)
     (ρ : ℝ) (hρ : ρ = ‖E‖ / minimum_singular_value (R.map (algebraMap ℝ ℂ))) (hlt : ρ < 1)
     (Q : Matrix ((Fin n) ⊕ (Fin p)) ((Fin n) ⊕ (Fin p)) ℝ)
@@ -409,11 +411,11 @@ theorem exercise_P6_5_4 {n p : ℕ} [NeZero n] [NeZero p]
     fromBlocks R H 0 E * Q = fromBlocks R₁ 0 H₁ E₁ → ‖H₁‖ ≤ ρ * ‖H‖ := by
   sorry
 
-end NAlg31
+end NAlg_P31
 
 
 
-namespace NAlg32
+namespace NAlg_P32
 
 /--
 P8.4.8 Suppose that
@@ -428,26 +430,26 @@ $$
 where $D=\operatorname{diag}\left(d_1, \ldots, d_{n-1}\right)$ has distinct diagonal entries and $v \in \mathbb{R}^{n-1}$ has no zero entries.
 
 (a) Show that if $\lambda \in \lambda(A)$, then $D-\lambda I_{n-1}$ is nonsingular.
+-/
+theorem diagonal_plus_rank_one_eigenvalue_condition (n : ℕ) (hn : n > 0) (d : Fin (n - 1) → ℝ)
+    (v : Fin (n - 1) → ℝ) (d_n : ℝ) (h_distinct : d.Injective) (h_nonzero : ∀ i, v i ≠ 0)
+    (A : Matrix (Fin (n - 1) ⊕ Fin 1) (Fin (n - 1) ⊕ Fin 1) ℝ)
+    (hA : A = fromBlocks (diagonal d) (fun i j ↦ v i) (fun i j ↦ v j) (fun _ _ => d_n)) :
+    ∀ μ, Module.End.HasEigenvalue (toLin' A) μ → IsUnit (diagonal d - μ • 1) := by
+  sorry
 
+/--
 (b) Show that if $\lambda \in \lambda(A)$, then $\lambda$ is a zero of
 
 $$
 f(\lambda)=\lambda+\sum_{k=1}^{n-1} \frac{v_k^2}{d_k-\lambda}-d_n .
 $$
 -/
-theorem problem_8_4_8_a (n : ℕ) (hn : n > 0) (d : Fin (n - 1) → ℝ) (v : Fin (n - 1) → ℝ) (d_n : ℝ)
-    (h_distinct : d.Injective) (h_nonzero : ∀ i, v i ≠ 0)
-    (A : Matrix (Fin (n - 1) ⊕ Fin 1) (Fin (n - 1) ⊕ Fin 1) ℝ)
-    (hA : A = fromBlocks (diagonal d) (fun i j ↦ v i) (fun i j ↦ v j) (fun _ _ => d_n)) :
-    ∀ μ, Module.End.HasEigenvalue (toLin' A) μ → IsUnit (diagonal d - μ • 1) := by
-  sorry
-
-
-theorem problem_8_4_8_b (n : ℕ) (hn : n > 0) (d : Fin (n - 1) → ℝ) (v : Fin (n - 1) → ℝ) (d_n : ℝ)
-    (h_distinct : d.Injective) (h_nonzero : ∀ i, v i ≠ 0)
+theorem eigenvalue_equation_for_diagonal_plus_rank_one (n : ℕ) (hn : n > 0) (d : Fin (n - 1) → ℝ)
+    (v : Fin (n - 1) → ℝ) (d_n : ℝ) (h_distinct : d.Injective) (h_nonzero : ∀ i, v i ≠ 0)
     (A : Matrix (Fin (n - 1) ⊕ Fin 1) (Fin (n - 1) ⊕ Fin 1) ℝ)
     (hA : A = fromBlocks (diagonal d) (fun i j ↦ v i) (fun i j ↦ v j) (fun _ _ => d_n)) :
     ∀ μ, Module.End.HasEigenvalue (toLin' A) μ → μ + ∑ k, (v k)^2 / (d k - μ) - d_n = 0 := by
   sorry
 
-end NAlg32
+end NAlg_P32
