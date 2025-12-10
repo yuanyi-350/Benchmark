@@ -43,8 +43,8 @@ variable [Fintype m] [Fintype n] [Fintype p]
 variable [DecidableEq m] [DecidableEq n] [DecidableEq p]
 
 theorem inv_add_mul_conj (A : Matrix n n ℂ) (B : Matrix m m ℂ) (C : Matrix n m ℂ)
-    (hA : IsUnit A) (hB : IsUnit B) (h : IsUnit (B⁻¹ + Cᵀ*A⁻¹*C)) :
-    (A + C * B * Cᵀ)⁻¹ = A⁻¹ - A⁻¹ * C * (B⁻¹ + Cᵀ*A⁻¹*C)⁻¹ * Cᵀ * A⁻¹ :=
+    (hA : IsUnit A) (hB : IsUnit B) (h : IsUnit (B⁻¹ + Cᵀ * A⁻¹ * C)) :
+    (A + C * B * Cᵀ) * (A⁻¹ - A⁻¹ * C * (B⁻¹ + Cᵀ * A⁻¹ * C)⁻¹ * Cᵀ * A⁻¹) = 1 := by
   sorry
 
 end NAlg_E3
@@ -61,7 +61,7 @@ variable [DecidableEq m] [DecidableEq n] [DecidableEq p]
 
 theorem inv_add_mul_mul_eq (A : Matrix n n ℂ) (B : Matrix n m ℂ) (C : Matrix m n ℂ)
     (hA : IsUnit A) (h : IsUnit (1 + C * A⁻¹ * B)) :
-    (A + B * C)⁻¹ = A⁻¹ - A⁻¹ * B * (1 + C * A⁻¹ * B)⁻¹ * C * A⁻¹ := by
+    (A + B * C) * (A⁻¹ - A⁻¹ * B * (1 + C * A⁻¹ * B)⁻¹ * C * A⁻¹) = 1 := by
   sorry
 
 end NAlg_E4
@@ -76,8 +76,8 @@ variable [Fintype m] [Fintype n] [Fintype p]
 
 variable [DecidableEq m] [DecidableEq n] [DecidableEq p]
 
-theorem inv_add_inv_inv_eq (A B : Matrix n n ℂ) (hA : IsUnit A) (hB : IsUnit B) :
-    (A⁻¹ + B⁻¹)⁻¹ = A * (A + B)⁻¹ * B ∧ (A⁻¹ + B⁻¹)⁻¹ = B * (A + B)⁻¹ * A := by
+theorem inv_add_inv_inv_eq (A B : Matrix n n ℂ) (hA : IsUnit A) (hB : IsUnit B)
+    (hAB : IsUnit (A + B)): (A⁻¹ + B⁻¹) * (A * (A + B)⁻¹ * B) = 1 := by
   sorry
 
 end NAlg_E5
@@ -97,3 +97,18 @@ theorem trace_mul_cycle {A : Matrix m n ℝ} {B : Matrix n p ℝ} {C : Matrix p 
   sorry
 
 end NAlg_E6
+
+
+
+namespace NAlg_E7
+
+variable {n : Type*} [Fintype n] [DecidableEq n]
+
+open Matrix
+
+theorem sherman_morrison {A : Matrix n n ℝ} (hA : IsUnit A) (u v : n → ℝ) (σ : ℝ)
+    (hσ : σ = 1 + dotProduct v (A⁻¹.mulVec u)) (ne : σ ≠ 0):
+    (A + vecMulVec u v) * (A⁻¹ - (σ⁻¹ • (A⁻¹ * (vecMulVec u v) * A⁻¹))) = 1 := by
+  sorry
+
+end NAlg_E7

@@ -11,17 +11,15 @@ open scoped Norms.Frobenius
 variable {m n : ℕ} [NeZero m] [NeZero n]
 
 def algorithm (A B : Matrix (Fin m) (Fin n) ℝ) (hA : rank A = n) :
-    ℕ → Matrix (Fin n) (Fin n) ℝ := fun k => match k with
-  | 0 => 0
-  | k + 1 => sorry
+    ℕ → Matrix (Fin n) (Fin n) ℝ := sorry
 
 /--
 P6.4.5 Suppose $A, B \in \mathbb{R}^{m \times n}$ and that $A$ has full column rank.
-Show how to compute a symmetric matrix $X \in \mathbb{R}^{n \times n}$ that minimizes $\|A X-B\|_F$. Hint: Compute the SVD of $A$.
+Show how to compute a symmetric matrix $X \in \mathbb{R}^{n \times n}$ that minimizes $\|A X-B\|_F$.
 -/
 theorem exists_symmetric_frobenius_minimizer (A B : Matrix (Fin m) (Fin n) ℝ) (hA : rank A = n) :
-    IsSymm (algorithm A B hA m) ∧
-    IsMinOn (fun (X : Matrix (Fin n) (Fin n) ℝ) ↦ ‖A * X - B‖) ⊤ (algorithm A B hA m) := by
+    IsSymm (algorithm A B hA m) ∧ IsMinOn (fun (X : Matrix (Fin n) (Fin n) ℝ) ↦ ‖A * X - B‖)
+    {X | IsSymm X} (algorithm A B hA m) := by
   sorry
 
 end NAlg_A7
@@ -125,7 +123,7 @@ def algorithm (A : Matrix (Fin m) (Fin n) ℝ) : ℕ → Matrix (Fin m) (Fin m) 
   | k + 1 => sorry
 
 /--
-P5.4.4 Suppose $A \in \mathbb{R}^{m \timesf n}$ with $m \geq n$.
+P5.4.4 Suppose $A \in \mathbb{R}^{m \times n}$ with $m \geq n$.
 Give an algorithm that uses Householder matrices to compute an orthogonal $Q \in \mathbb{R}^{m \times m}$
 so that if $Q^T A=L$, then $L(n+1: m,:)=0$ and $L(1: n, 1: n)$ is lower triangular.
 -/
@@ -208,7 +206,7 @@ namespace NAlg_A14
 
 open scoped Matrix.Norms.Frobenius
 
-variable {n : ℕ} [NeZero n]
+variable {n : ℕ} (hn : n ≥ 2)
 
 def algorithm (A : Matrix (Fin n) (Fin n) ℝ) : Matrix (Fin n) (Fin n) ℝ := by
   sorry
