@@ -26,17 +26,28 @@ namespace NAlg_P2
 variable {n : ℕ} [NeZero n]
 
 /--
-P2.1.9 Show that if $S$ is real and $S^T=-S$, then $I-S$ is nonsingular and the matrix $(I-S)^{-1}(I+S)$ is orthogonal.
+P2.1.9 Show that if $S$ is real and $S^T=-S$, then $I-S$ is nonsingular
 -/
 theorem isUnit_one_sub_skew_symmetric (S : Matrix (Fin n) (Fin n) ℝ) (hS : Sᵀ = -S) :
     IsUnit (1 - S) := by
   sorry
 
-theorem cayley_transform_orthogonal (S : Matrix (Fin n) (Fin n) ℝ)
-    (hS : Sᵀ = -S) : (1 - S)⁻¹ * (1 + S) ∈ orthogonalGroup (Fin n) ℝ := by
+end NAlg_P2
+
+
+
+namespace NAlg_P56
+
+variable {n : ℕ} [NeZero n]
+
+/--
+P2.1.9 Show that if $S$ is real and $S^T=-S$, and $I-S$ is nonsingular, then the matrix $(I-S)^{-1}(I+S)$ is orthogonal.
+-/
+theorem cayley_transform_orthogonal (S : Matrix (Fin n) (Fin n) ℝ) (hS : Sᵀ = -S)
+    (InvS : IsUnit (1 - S)) : (1 - S)⁻¹ * (1 + S) ∈ orthogonalGroup (Fin n) ℝ := by
   sorry
 
-end NAlg_P2
+end NAlg_P56
 
 
 

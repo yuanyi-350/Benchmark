@@ -12,7 +12,7 @@ variable [Fintype m] [Fintype n] [Fintype p]
 
 variable [DecidableEq m] [DecidableEq n] [DecidableEq p]
 
-theorem mul_inv_of_isUnit (A : Matrix n n ℂ)(h : IsUnit A.det) : A * A⁻¹ = 1 ∧ A⁻¹ * A = 1 := by
+theorem mul_inv_of_isUnit (A : Matrix n n ℂ) (h : IsUnit A.det) : A * A⁻¹ = 1 ∧ A⁻¹ * A = 1 := by
   sorry
 
 end NAlg_E1
@@ -77,7 +77,7 @@ variable [Fintype m] [Fintype n] [Fintype p]
 variable [DecidableEq m] [DecidableEq n] [DecidableEq p]
 
 theorem inv_add_inv_inv_eq (A B : Matrix n n ℂ) (hA : IsUnit A) (hB : IsUnit B)
-    (hAB : IsUnit (A + B)): (A⁻¹ + B⁻¹) * (A * (A + B)⁻¹ * B) = 1 := by
+    (hAB : IsUnit (A + B)) : (A⁻¹ + B⁻¹) * (A * (A + B)⁻¹ * B) = 1 := by
   sorry
 
 end NAlg_E5
@@ -107,7 +107,7 @@ variable {n : Type*} [Fintype n] [DecidableEq n]
 open Matrix
 
 theorem sherman_morrison {A : Matrix n n ℝ} (hA : IsUnit A) (u v : n → ℝ) (σ : ℝ)
-    (hσ : σ = 1 + dotProduct v (A⁻¹.mulVec u)) (ne : σ ≠ 0):
+    (hσ : σ = 1 + dotProduct v (A⁻¹.mulVec u)) (ne : σ ≠ 0) :
     (A + vecMulVec u v) * (A⁻¹ - (σ⁻¹ • (A⁻¹ * (vecMulVec u v) * A⁻¹))) = 1 := by
   sorry
 
