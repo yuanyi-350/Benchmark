@@ -36,7 +36,7 @@ end NAlg_P2
 
 
 
-namespace NAlg_P56
+namespace NAlg_P3
 
 variable {n : ℕ} [NeZero n]
 
@@ -47,11 +47,11 @@ theorem cayley_transform_orthogonal (S : Matrix (Fin n) (Fin n) ℝ) (hS : Sᵀ 
     (InvS : IsUnit (1 - S)) : (1 - S)⁻¹ * (1 + S) ∈ orthogonalGroup (Fin n) ℝ := by
   sorry
 
-end NAlg_P56
+end NAlg_P3
 
 
 
-namespace NAlg_P3
+namespace NAlg_P4
 
 /--
 P5.1.2 Show that $\operatorname{det}\left(I+x y^T\right)=1+x^T y$ where $x$ and $y$ are given $m$-vectors.
@@ -60,11 +60,11 @@ theorem det_identity_plus_outer_product {m : ℕ} [NeZero m] (x y : Fin m → �
     det (1 + vecMulVec x y) = 1 + x ⬝ᵥ y := by
   sorry
 
-end NAlg_P3
+end NAlg_P4
 
 
 
-namespace NAlg_P4
+namespace NAlg_P5
 
 /--
 P5.5.8 Suppose $A \in \mathbb{R}^{m \times n}$ and that $\left\|u^T A\right\|_2 = \sigma$ with $u^T u=1$.
@@ -78,11 +78,11 @@ theorem least_squares_residual_lower_bound {m n : ℕ} [NeZero m] [NeZero n]
     ‖toLp 2 x‖ ≥ |u ⬝ᵥ b| / σ := by
   sorry
 
-end NAlg_P4
+end NAlg_P5
 
 
 
-namespace NAlg_P5
+namespace NAlg_P6
 
 /--
 P5.2.12 Show that if $A \in \mathbb{R}^{n \times n}$ and $a_i=A(:, i)$, then
@@ -95,11 +95,11 @@ theorem abs_det_le_product_norm_columns {n : ℕ} [NeZero n] (A : Matrix (Fin n)
     |A.det| ≤ ∏ i : Fin n, ‖toLp 2 (Aᵀ i)‖ := by
   sorry
 
-end NAlg_P5
+end NAlg_P6
 
 
 
-namespace NAlg_P6
+namespace NAlg_P7
 
 /--
 Lemma 5.1.1. Suppose $Q=I_m-W Y^T$ is an $m$-by-$m$ orthogonal matrix with $W, Y \in \mathbb{R}^{m \times j}$.
@@ -117,30 +117,6 @@ theorem orthogonal_update_identity {m j : ℕ} [NeZero m] [NeZero j] (β : ℝ)
     (hQ_ortho : Q ∈ orthogonalGroup (Fin m) ℝ)
     (v z : Matrix (Fin m) (Fin 1) ℝ) (hP : P = 1 - β • v * vᵀ) (hz : z = β • Q * v) :
     Q * P = 1 - (fromCols W z) * (fromCols Y v)ᵀ := by
-  sorry
-
-end NAlg_P6
-
-
-
-namespace NAlg_P7
-
-/--
-P7.5.1 Show that if $\bar{H}=Q^T H Q$ is obtained by performing a single-shift QR step with
-
-$$
-H=\left[\begin{array}{ll}
-w & x \\
-y & z
-\end{array}\right],
-$$
-
-then $\left|\bar{h}_{21}\right| \leq\left|y^2 x\right| /\left[(w-z)^2+y^2\right]$.
--/
-theorem single_shift_QR_inequality {x y z w : ℝ} (H H_bar Q : Matrix (Fin 2) (Fin 2) ℝ)
-    (hH : H = !![w, x; y, z]) (hQ_ortho : Q ∈ orthogonalGroup (Fin 2) ℝ)
-    (h_transform : H_bar = Qᵀ * H * Q) :
-    |H_bar 1 0| ≤ |y ^ 2 * x| / ((w - z) ^ 2 + y ^ 2) := by
   sorry
 
 end NAlg_P7
