@@ -132,13 +132,10 @@ open scoped Matrix.Norms.Frobenius
 
 variable {m n : ℕ} [NeZero m] [NeZero n] {δ : ℝ}
 
-def algorithm (hδ : 0 ≤ δ) (r : Fin m → ℝ) (y : Fin n → ℝ) :
-    ℕ → Matrix (Fin m) (Fin n) ℝ := fun k => match k with
-  | 0 => 0
-  | k + 1 => sorry
+def algorithm (hδ : 0 ≤ δ) (r : Fin m → ℝ) (y : Fin n → ℝ) : Matrix (Fin m) (Fin n) ℝ := sorry
 
 theorem algorithm_norm_le (hδ : 0 ≤ δ) (r : Fin m → ℝ) (y : Fin n → ℝ) :
-    ‖algorithm hδ r y m‖ ≤ δ := by
+    ‖algorithm hδ r y‖ ≤ δ := by
   sorry
 
 /--
@@ -150,7 +147,7 @@ $$
 -/
 theorem zero_matrix_feasible (hδ : 0 ≤ δ) (r : Fin m → ℝ) (y : Fin n → ℝ) :
     IsMinOn (fun (E : {E : Matrix (Fin m) (Fin n) ℝ | ‖E‖ ≤ δ}) ↦
-    ‖toLp 2 (E *ᵥ y - r)‖) ⊤ ⟨algorithm hδ r y m, algorithm_norm_le hδ r y⟩  := by
+    ‖toLp 2 (E *ᵥ y - r)‖) ⊤ ⟨algorithm hδ r y, algorithm_norm_le hδ r y⟩  := by
   sorry
 
 end NAlg_A5
@@ -163,12 +160,9 @@ open scoped Matrix.Norms.Frobenius
 
 variable {m n : ℕ} [NeZero m] [NeZero n] {δ : ℝ}
 
-def algorithm (hδ : 0 ≤ δ) (r : Fin m → ℝ) (y : Fin n → ℝ) :
-    ℕ → Matrix (Fin m) (Fin n) ℝ := fun k => match k with
-  | 0 => 0
-  | k + 1 => sorry
+def algorithm (hδ : 0 ≤ δ) (r : Fin m → ℝ) (y : Fin n → ℝ) : Matrix (Fin m) (Fin n) ℝ := sorry
 
-theorem algorithm_norm_le (hδ : 0 ≤ δ) (r : Fin m → ℝ) (y : Fin n → ℝ) : ‖algorithm hδ r y m‖ ≤ δ := by
+theorem algorithm_norm_le (hδ : 0 ≤ δ) (r : Fin m → ℝ) (y : Fin n → ℝ) : ‖algorithm hδ r y‖ ≤ δ := by
   sorry
 
 /--
@@ -180,7 +174,7 @@ $$
 -/
 theorem zero_matrix_feasible (hδ : 0 ≤ δ) (r : Fin m → ℝ) (y : Fin n → ℝ) :
     IsMaxOn (fun (E : {E : Matrix (Fin m) (Fin n) ℝ | ‖E‖ ≤ δ}) ↦
-    ‖toLp 2 (E *ᵥ y - r)‖) ⊤ ⟨algorithm hδ r y m, algorithm_norm_le hδ r y⟩  := by
+    ‖toLp 2 (E *ᵥ y - r)‖) ⊤ ⟨algorithm hδ r y, algorithm_norm_le hδ r y⟩  := by
   sorry
 
 end NAlg_A6

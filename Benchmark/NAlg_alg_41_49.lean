@@ -11,15 +11,15 @@ open scoped Norms.Frobenius
 variable {m n : ℕ} [NeZero m] [NeZero n]
 
 def algorithm (A B : Matrix (Fin m) (Fin n) ℝ) (hA : rank A = n) :
-    ℕ → Matrix (Fin n) (Fin n) ℝ := sorry
+    Matrix (Fin n) (Fin n) ℝ := sorry
 
 /--
 P6.4.5 Suppose $A, B \in \mathbb{R}^{m \times n}$ and that $A$ has full column rank.
 Show how to compute a symmetric matrix $X \in \mathbb{R}^{n \times n}$ that minimizes $\|A X-B\|_F$.
 -/
 theorem exists_symmetric_frobenius_minimizer (A B : Matrix (Fin m) (Fin n) ℝ) (hA : rank A = n) :
-    IsSymm (algorithm A B hA m) ∧ IsMinOn (fun (X : Matrix (Fin n) (Fin n) ℝ) ↦ ‖A * X - B‖)
-    {X | IsSymm X} (algorithm A B hA m) := by
+    IsSymm (algorithm A B hA) ∧ IsMinOn (fun (X : Matrix (Fin n) (Fin n) ℝ) ↦ ‖A * X - B‖)
+    {X | IsSymm X} (algorithm A B hA) := by
   sorry
 
 end NAlg_A7
@@ -66,18 +66,16 @@ def Hessenberg (H : Matrix (Fin n) (Fin n) ℝ) : Prop :=
   ∀ i j : Fin n, (j.1 + 2 ≤ i.1) → H i j = 0
 
 def algorithm (A B : Matrix (Fin n) (Fin n) ℝ) :
-    ℕ → (Matrix (Fin n) (Fin n) ℝ) × (Matrix (Fin n) (Fin n) ℝ) := fun k => match k with
-  | 0 => 0
-  | k + 1 => sorry
+    (Matrix (Fin n) (Fin n) ℝ) × (Matrix (Fin n) (Fin n) ℝ) := sorry
 
 /--
 P7.7.2 Suppose $A$ and $B$ are in $\mathbb{R}^{n \times n}$. Give an algorithm for computing orthogonal $Q$ and $Z$ such that $Q^T A Z$ is upper Hessenberg and $Z^T B Q$ is upper triangular.
 -/
 theorem exists_orthogonal_QZ_hessenberg_and_triangular (A B : Matrix (Fin n) (Fin n) ℝ) :
-    (algorithm A B n).1 ∈ orthogonalGroup (Fin n) ℝ ∧
-    (algorithm A B n).2 ∈ orthogonalGroup (Fin n) ℝ ∧
-    Hessenberg ((algorithm A B n).1ᵀ * A * (algorithm A B n).2) ∧
-    ((algorithm A B n).2ᵀ * A * (algorithm A B n).1).BlockTriangular id:= by
+    (algorithm A B).1 ∈ orthogonalGroup (Fin n) ℝ ∧
+    (algorithm A B).2 ∈ orthogonalGroup (Fin n) ℝ ∧
+    Hessenberg ((algorithm A B).1ᵀ * A * (algorithm A B).2) ∧
+    ((algorithm A B).2ᵀ * A * (algorithm A B).1).BlockTriangular id:= by
   sorry
 
 end NAlg_A9
@@ -118,9 +116,7 @@ def leadingBlock (L : Matrix (Fin m) (Fin n) ℝ) (hmn : n ≤ m) : Matrix (Fin 
 def leadingBlockLowerTriangular (L : Matrix (Fin m) (Fin n) ℝ) (hmn : n ≤ m) : Prop :=
   (leadingBlock (L := L) hmn).BlockTriangular OrderDual.toDual
 
-def algorithm (A : Matrix (Fin m) (Fin n) ℝ) : ℕ → Matrix (Fin m) (Fin m) ℝ := fun k => match k with
-  | 0 => 0
-  | k + 1 => sorry
+def algorithm (A : Matrix (Fin m) (Fin n) ℝ) : ℕ → Matrix (Fin m) (Fin m) ℝ := sorry
 
 /--
 P5.4.4 Suppose $A \in \mathbb{R}^{m \times n}$ with $m \geq n$.
@@ -148,10 +144,7 @@ diagonal is zero.
 def IsTridiagonal (M : Matrix (Fin n) (Fin n) ℝ) : Prop :=
   ∀ (i j : Fin n), 1 < Nat.dist (i : ℕ) (j : ℕ) → M i j = 0
 
-def algorithm (hS_skew : Sᵀ = -S) (u : Fin n → ℝ) (σ : ℝ) :
-    ℕ → Matrix (Fin n) (Fin n) ℝ := fun k => match k with
-  | 0 => 0
-  | k + 1 => sorry
+def algorithm (hS_skew : Sᵀ = -S) (u : Fin n → ℝ) (σ : ℝ) : Matrix (Fin n) (Fin n) ℝ := sorry
 
 /--
 P8.4.5 Suppose $A=S+\sigma u u^T$ where $S \in \mathbb{R}^{n \times n}$ is skew-symmetric,
@@ -159,9 +152,9 @@ $u \in \mathbb{R}^n$, and $\sigma \in \mathbb{R}$.
 Show how to compute an orthogonal $Q$ such that $Q^T A Q=T+\sigma e_1 e_1^T$ where $T$ is tridiagonal and skew-symmetric.
 -/
 theorem exists_orthogonal_Q_tridiagonal_skew (hS_skew : Sᵀ = -S) (u : Fin n → ℝ) (σ : ℝ) :
-    (algorithm hS_skew u σ n) ∈ orthogonalGroup (Fin n) ℝ ∧
+    (algorithm hS_skew u σ) ∈ orthogonalGroup (Fin n) ℝ ∧
     ∃ (T : Matrix (Fin n) (Fin n) ℝ), IsTridiagonal T ∧ Tᵀ = -T ∧
-    (algorithm hS_skew u σ n)ᵀ * (S + σ • vecMulVec u u) * (algorithm hS_skew u σ n)
+    (algorithm hS_skew u σ)ᵀ * (S + σ • vecMulVec u u) * (algorithm hS_skew u σ)
     = T + σ • vecMulVec (fun (i : Fin n) => if (i : ℕ) = 0 then 1 else 0)
     (fun (i : Fin n) => if (i : ℕ) = 0 then 1 else 0) := by
   sorry
@@ -181,10 +174,7 @@ diagonal is zero.
 def IsTridiagonal (M : Matrix (Fin n) (Fin n) ℝ) : Prop :=
   ∀ (i j : Fin n), 1 < Nat.dist (i : ℕ) (j : ℕ) → M i j = 0
 
-def algorithm (hS_skew : Sᵀ = -S) (hu_norm : ‖u‖ = 1) (σ : ℝ) :
-    ℕ → Matrix (Fin n) (Fin n) ℝ := fun k => match k with
-  | 0 => 0
-  | k + 1 => sorry
+def algorithm (hS_skew : Sᵀ = -S) (hu_norm : ‖u‖ = 1) (σ : ℝ) : Matrix (Fin n) (Fin n) ℝ := sorry
 
 /--
 P8.3.7 Suppose $A=S+\sigma u u^T$ where $S \in \mathbb{R}^{n \times n}$ is skew-symmetric
@@ -193,9 +183,9 @@ Show how to compute an orthogonal $Q$ such that $Q^T A Q$ is tridiagonal and $Q^
 -/
 theorem exists_orthogonal_Q_tridiagonal (A : Matrix (Fin n) (Fin n) ℝ) (σ : ℝ)
     (hA : A = S + σ • vecMulVec u u) (hS_skew : Sᵀ = - S) (hu_norm : ‖u‖ = 1) :
-    (algorithm hS_skew hu_norm σ n) ∈ orthogonalGroup (Fin n) ℝ ∧
-    IsTridiagonal ((algorithm hS_skew hu_norm σ n)ᵀ * A * (algorithm hS_skew hu_norm σ n)) ∧
-    (algorithm hS_skew hu_norm σ n)ᵀ *ᵥ u = fun (i : Fin n) => if (i : ℕ) = 0 then 1 else 0 := by
+    (algorithm hS_skew hu_norm σ) ∈ orthogonalGroup (Fin n) ℝ ∧
+    IsTridiagonal ((algorithm hS_skew hu_norm σ)ᵀ * A * (algorithm hS_skew hu_norm σ)) ∧
+    (algorithm hS_skew hu_norm σ)ᵀ *ᵥ u = fun (i : Fin n) => if (i : ℕ) = 0 then 1 else 0 := by
   sorry
 
 end NAlg_A13
@@ -236,8 +226,7 @@ open scoped Matrix.Norms.Frobenius
 
 variable {n : ℕ} [NeZero n]
 
-def algorithm (A : Matrix (Fin n) (Fin n) ℝ) : Matrix (Fin n) (Fin n) ℝ := by
-  sorry
+def algorithm (A : Matrix (Fin n) (Fin n) ℝ) : Matrix (Fin n) (Fin n) ℝ := sorry
 
 def admissible (S : Matrix (Fin n) (Fin n) ℝ) : Prop :=
   rank S = 2 ∧ Sᵀ = -S
